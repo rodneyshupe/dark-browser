@@ -142,16 +142,14 @@ function setup_vpn() {
     sudo update-rc.d -f openvpn remove
 
     echo "Get Privado VPN configs"
-    wget https://privadovpn.com/apps/ovpn_configs.zip >/dev/null
-    sudo unzip -d /etc/privadovpn/ ovpn_configs.zip >/dev/null
+    wget https://privadovpn.com/apps/ovpn_configs.zip -q --output-document=ovpn_configs.zip 
+    sudo unzip -d /etc/privadovpn/ ovpn_configs.zip >/dev/null && rm ovpn_configs.zip
 
     # Setup the auth file
     setup_auth_file /etc/openvpn/privado
 
     echo "Pick a random VPN configuration"
     rotate_vpn
-
-    # TODO: Add cron job
 
 
     #Setup Kill Switch
