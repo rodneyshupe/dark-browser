@@ -10,7 +10,7 @@ function usage {
     if [ $# -eq 0 ] || [ -z "$1" ]; then
         echo ""
         echo "Command:"
-        echo "  setup       Setup OpenVPN"
+        echo "  install     Setup OpenVPN"
         echo "  rotate      Select a random VPN configuration to use"
         echo "  help        Display this usage message"
     fi
@@ -19,7 +19,7 @@ function usage {
 function parse_args () {
     while (( "$#" )); do
         case "$1" in
-            setup)
+            install)
                 shift
                 setup_vpn
                 exit
@@ -27,6 +27,18 @@ function parse_args () {
             rotate)
                 shift
                 rotate_vpn 1 1
+                exit
+                ;;
+            check)
+                shift
+                local ip=$(curl -sSL --max-time 1 ifconfig.co 2>/dev/null)
+                if [ -z "$ip" ]; then
+                    echo "WARNING: problem connecting consider a rotate."
+                    echo "${SCRIPT_NAME} rotate"
+                    exit 3
+                else
+                    echo "Connected and using IP: $ip"
+                fi
                 exit
                 ;;
             help)
@@ -124,7 +136,7 @@ function setup_vpn() {
     ori_ip="$(curl ifconfig.co)"
 
     echo "Install open VPN"
-    sudo apt update && sudo apt install openvpn ufw -y /dev/null
+    sudo apt update  -q -q -q && sudo apt install openvpn ufw -y -q -q -q
 
     echo "Remove any previous launchers"
     sudo update-rc.d -f openvpn remove
@@ -142,7 +154,7 @@ function setup_vpn() {
     # TODO: Add cron job
 
 
-    #TODO: Setup Kill Switch
+    #Setup Kill Switch
     setup_vpn_kill_switch
 
     echo "Set OpenVPN to start on boot"
