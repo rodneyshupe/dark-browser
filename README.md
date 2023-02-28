@@ -1,4 +1,4 @@
-# dark-browser
+# private-browser
 
 These scripts allow for the easy setup of a VM on Proxmox that only allows browsing over VPN.
 

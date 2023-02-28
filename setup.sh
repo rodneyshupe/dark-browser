@@ -26,15 +26,15 @@ echo "$(cd /opt/tor-browser; ./start-tor-browser.desktop --register-app)"
 
 echo "Changing Wallpaper"
 echo "  Download wallpaper..."
-wget https://github.com/rodneyshupe/dark-browser/raw/main/wallpaper/dark-browser.png -q --output-document=dark-browser.png
-sudo cp dark-browser.png /usr/share/lubuntu/wallpapers/ && rm dark-browser.png
+wget https://github.com/rodneyshupe/private-browser/raw/main/wallpaper/private-browser.png -q --output-document=private-browser.png
+sudo cp private-browser.png /usr/share/lubuntu/wallpapers/ && rm private-browser.png
 echo "  Set new wallpaper..."
 if [ -z "$DISPLAY" ]; then
     export DISPLAY=:0
 else
     export DISPLAY=$DISPLAY
 fi
-pcmanfm-qt --set-wallpaper=/usr/share/lubuntu/wallpapers/dark-browser.png --wallpaper-mode=center
+pcmanfm-qt --set-wallpaper=/usr/share/lubuntu/wallpapers/private-browser.png --wallpaper-mode=center
 echo "  NOTE: You may want to update theme using: lxqt-config-appearance"
 echo 
 
@@ -46,12 +46,12 @@ sudo update-initramfs -u
 
 echo "Change login screen background"
 sudo cp /usr/share/sddm/themes/lubuntu/wall.jpg{,.bak}
-wget https://github.com/rodneyshupe/dark-browser/raw/main/wallpaper/wall.jpg -q --output-document=wall.jpg
+wget https://github.com/rodneyshupe/private-browser/raw/main/wallpaper/wall.jpg -q --output-document=wall.jpg
 sudo cp wall.jpg /usr/share/sddm/themes/lubuntu/wall.jpg
 rm wall.jpg
 
 echo "Get VPN setup script..."
-#get https://github.com/rodneyshupe/dark-browser/raw/main/privado-vpn.sh -q
+#get https://github.com/rodneyshupe/private-browser/raw/main/privado-vpn.sh -q
 chmod +x privado-vpn.sh
 sudo mv privado-vpn.sh /opt/privado-vpn
 sudo ln -s /opt/privado-vpn /usr/sbin/privado-vpn
