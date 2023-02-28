@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+function swapcolor(){
+    local file_path=$1
+
+    if $(grep -e 'Color=0x0078c2' $file_path >/dev/null); then
+        sudo cp ${file_path}{,.bak}
+        sudo sed -i -e 's/Color=0x0078c2/Color=0x420b5d/g' ${file_path}
+    fi
+}
+
 echo "Download Tor Browser"
 link="$(curl -sSL https://www.torproject.org/download/ | grep --only-matching 'href=".*tor-browser-linux64.*\_ALL.tar.xz"' | head -1 | sed -e 's/^href="\(.*\)"$/\1/')"
 if [[ $link =~ ^/ ]]; then
@@ -27,8 +36,19 @@ else
 fi
 pcmanfm-qt --set-wallpaper=/usr/share/lubuntu/wallpapers/dark-browser.png --wallpaper-mode=center
 echo "  NOTE: You may want to update theme using: lxqt-config-appearance"
+echo 
 
-#TODO: Change login screen background and splash screen
+echo "Change splash screen background color"
+swapcolor /usr/share/plymouth/themes/default.plymouth
+swapcolor /usr/share/plymouth/themes/lubuntu-logo/lubuntu-logo.plymouth
+swapcolor /usr/share/plymouth/themes/lubuntu-logo/bgrt/bgrt.plymouth
+sudo update-initramfs -u
+
+echo "Change login screen background"
+sudo cp /usr/share/sddm/themes/lubuntu/wall.jpg{,.bak}
+wget https://github.com/rodneyshupe/dark-browser/raw/main/wallpaper/wall.jpg -q --output-document=wall.jpg
+sudo cp wall.jpg /usr/share/sddm/themes/lubuntu/wall.jpg
+rm wall.jpg
 
 echo "Get VPN setup script..."
 #get https://github.com/rodneyshupe/dark-browser/raw/main/privado-vpn.sh -q
